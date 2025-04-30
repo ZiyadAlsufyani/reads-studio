@@ -5,7 +5,7 @@
 type Read @model
   @auth(rules: [
     { allow: public, operations: [read] },
-    { allow: owner, identityClaim: "sub", operations: [create, update, delete] }
+    { allow: owner, identityClaim: "sub", operations: [create, read, update, delete] }
   ]) {
   id: ID!
   title: String!
@@ -23,7 +23,7 @@ type Read @model
 type Slide @model
   @auth(rules: [
     { allow: public, operations: [read] },
-    { allow: owner, identityClaim: "sub", operations: [create, update, delete] }
+    { allow: owner, identityClaim: "sub", operations: [create, read, update, delete] }
   ]) {
   id: ID!
   readId: ID! @index(name: "byRead", sortKeyFields: ["slideNumber"])
