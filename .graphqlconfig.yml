@@ -1,0 +1,19 @@
+projects:
+  readerapp:
+    schemaPath: amplify/backend/api/readerapp/build/schema.graphql
+    includes:
+      - src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+      - src/API.ts
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: src/API.ts
+        docsFilePath: src/graphql
+        region: me-south-1
+        apiId: null
+        maxDepth: 2
+extensions:
+  amplify:
+    version: 3

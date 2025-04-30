@@ -301,7 +301,8 @@ export function SummaryViewer({
       {viewMode === "edit" ? (
         <>
           <Card>
-            <CardHeader>
+            {/* Disable it for now until it is enabled in the */}
+            {/* <CardHeader>
               <CardTitle className="text-base">Title</CardTitle>
             </CardHeader>
             <CardContent>
@@ -311,7 +312,7 @@ export function SummaryViewer({
                 placeholder="Enter a title for this summary"
                 className="mb-4"
               />
-            </CardContent>
+            </CardContent> */}
           </Card>
 
           <Card>

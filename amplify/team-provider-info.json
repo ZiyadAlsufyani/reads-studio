@@ -17,6 +17,9 @@
       },
       "storage": {
         "readerAppContentStorage": {}
+      },
+      "api": {
+        "readerapp": {}
       }
     }
   }

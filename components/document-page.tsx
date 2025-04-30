@@ -1,50 +1,58 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { DocumentSplitter } from "@/components/document-splitter"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { useRouter } from "next/navigation"
-import { getBook } from "@/lib/api-client"
+import { useState, useEffect } from "react";
+import { DocumentSplitter } from "@/components/document-splitter";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { getRead } from "@/src/graphql/queries";
+import { client } from "@/lib/amplify";
 
 interface DocumentPageProps {
-  bookId?: string
+  bookId?: string;
 }
 
 export function DocumentPage({ bookId }: DocumentPageProps) {
-  const router = useRouter()
-  const [bookTitle, setBookTitle] = useState("")
-  const [isLoading, setIsLoading] = useState(true)
+  const router = useRouter();
+  const [bookTitle, setBookTitle] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!bookId) {
-      router.push("/books")
-      return
+      router.push("/books");
+      return;
     }
 
     // Load book data to get the title
     const loadBookData = async () => {
       try {
-        const book = await getBook(bookId)
+        const response = await client.graphql({
+          query: getRead,
+          variables: { id: bookId },
+          authMode: "userPool",
+        });
 
-        if (book) {
-          // Ensure we're setting a string value for the title
-          setBookTitle(typeof book.title === "string" ? book.title : "Book Details")
+        if (response.data?.getRead) {
+          const book = response.data.getRead;
+          console.log("Book data:", book);
+          setBookTitle(
+            typeof book.title === "string" ? book.title : "Book Details"
+          );
         } else {
           // Book not found, redirect to books list
-          router.push("/books")
+          router.push("/books");
         }
       } catch (e) {
-        console.error("Failed to load book data:", e)
-        router.push("/books")
+        console.error("Failed to load book data:", e);
+        router.push("/books");
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    loadBookData()
-  }, [bookId, router])
+    loadBookData();
+  }, [bookId, router]);
 
   if (isLoading) {
     return (
@@ -55,7 +63,7 @@ export function DocumentPage({ bookId }: DocumentPageProps) {
           <div className="h-[400px] bg-muted rounded"></div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -78,5 +86,5 @@ export function DocumentPage({ bookId }: DocumentPageProps) {
         <DocumentSplitter bookId={bookId} />
       </div>
     </main>
-  )
+  );
 }

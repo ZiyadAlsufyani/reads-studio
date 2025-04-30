@@ -4,7 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -73,11 +73,13 @@ export function LoginForm() {
 
     setIsLoading(true);
     let redirectLink = "/library";
+
     try {
       const result = await signIn({
         username: String(formData.email),
         password: String(formData.password),
       });
+
       const { isSignedIn, nextStep } = result;
 
       if (nextStep.signInStep === "CONFIRM_SIGN_UP") {
@@ -85,20 +87,30 @@ export function LoginForm() {
           username: String(formData.email),
         });
         redirectLink = "/confirm-signup?email=" + formData.email;
-        // load user data to context
       } else if (isSignedIn) {
         const session = await fetchAuthSession();
         const idToken = session.tokens?.idToken?.toString();
+
         if (idToken) {
           const payload = JSON.parse(atob(idToken.split(".")[1]));
+
           const email = payload.email || "";
           const name = payload.name || "";
-          setUser({ email, name, isLoggedIn: true });
+          const userId = payload.sub || "";
+
+          console.log("User ID:", userId);
+          setUser({
+            email,
+            name,
+            userId,
+            isLoggedIn: true,
+          });
         }
       }
+
       router.push(redirectLink);
     } catch (error) {
-      console.log("Error signing up:", (error as Error).name);
+      console.log("Error signing in:", (error as Error).name);
       toast.error(getErrorMessage(error));
     } finally {
       setIsLoading(false);

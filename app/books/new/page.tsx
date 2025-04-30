@@ -6,6 +6,5 @@ export const metadata = {
 };
 
 export default function NewBookPage() {
-  // Force isNew to be true to prevent any redirection
   return <BookDetailsPage isNew={true} />;
 }

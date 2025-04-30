@@ -25,8 +25,6 @@ export interface PageSummary {
 
 // Get all books
 export async function getBooks(): Promise<Book[]> {
-  // In a real application with a backend database, we would fetch from the API
-  // For this demo, we'll read from localStorage
   try {
     const savedBooksJson = localStorage.getItem("savedBooks")
     if (savedBooksJson) {

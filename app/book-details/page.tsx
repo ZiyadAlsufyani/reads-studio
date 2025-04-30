@@ -9,11 +9,11 @@ export default function BookDetailsPage() {
   useEffect(() => {
     const url = new URL(window.location.href);
     if (url.searchParams.get("new") === "true") {
-      router.replace("/books/new"); // 👈 client-side redirect
+      router.replace("/books/new"); 
     } else {
-      router.replace("/books"); // 👈 client-side redirect
+      router.replace("/books"); 
     }
   }, []);
 
-  return null; // nothing to render because it's just redirecting
+  return null;
 }

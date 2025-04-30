@@ -7,7 +7,8 @@ import { Navbar } from "@/components/navbar";
 import { Toaster } from "sonner";
 import "./amplify-cognito-config";
 import { AuthProvider } from "@/contexts/AuthContext";
-
+import { ThemeProvider as AmplifyTheme } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function RootLayout({
           <AuthProvider>
             <div className="min-h-screen flex flex-col">
               <Navbar />
+
               <main className="flex-1">{children}</main>
               <Toaster position="top-right" richColors />
             </div>

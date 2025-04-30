@@ -12,6 +12,7 @@ import { fetchAuthSession } from "aws-amplify/auth";
 interface User {
   email: string;
   name?: string;
+  userId?: string;
   isLoggedIn: boolean;
 }
 
@@ -35,7 +36,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           const payload = JSON.parse(atob(idToken.split(".")[1]));
           const email = payload.email || "";
           const name = payload.name || "";
-          setUser({ email, name, isLoggedIn: true });
+          const userId = payload.sub || "";
+          setUser({ email, name, userId, isLoggedIn: true });
         }
       } catch (error) {
         setUser(null); // Not logged in
